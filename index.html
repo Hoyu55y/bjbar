@@ -25,11 +25,7 @@
             --accent-yellow: #fff200;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -45,12 +41,7 @@
             overflow-x: hidden;
         }
 
-        .container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            z-index: 10;
-        }
+        .container { width: 100%; max-width: 600px; padding: 20px; z-index: 10; }
 
         .card {
             background: var(--card-bg);
@@ -67,18 +58,13 @@
         .card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 4px;
+            top: 0; left: -100%;
+            width: 100%; height: 4px;
             background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
             animation: flow 3s linear infinite;
         }
 
-        @keyframes flow {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
+        @keyframes flow { 0% { left: -100%; } 100% { left: 100%; } }
 
         h1 {
             font-family: 'DotGothic16', sans-serif;
@@ -89,20 +75,10 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
         }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            color: var(--secondary);
-            font-weight: 700;
-        }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.9rem; margin-bottom: 8px; color: var(--secondary); font-weight: 700; }
 
         input, select, textarea {
             width: 100%;
@@ -112,15 +88,15 @@
             padding: 12px 16px;
             color: white;
             font-family: inherit;
-            font-size: 16px; /* 防止 iOS 自动缩放 */
-            transition: all 0.3s ease;
-
+            font-size: 16px;
         }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        #aiSettings {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
         }
 
         .generate-btn {
@@ -131,146 +107,32 @@
             padding: 16px;
             color: white;
             font-weight: 700;
-            font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
             margin-bottom: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
 
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
-        }
+        .generate-btn.ai-btn { background: linear-gradient(135deg, #4285F4, #34A853); }
 
-        .generate-btn:active {
-            transform: translateY(0);
-        }
+        #resultText { height: 150px; resize: none; width: 100%; margin-top: 5px; }
+        .count-badge { position: absolute; bottom: 10px; right: 15px; font-size: 0.8rem; color: #888; }
+        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .action-btn { padding: 12px; border-radius: 10px; border: 1px solid var(--glass-border); background: rgba(255, 255, 255, 0.05); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        .generate-btn.ai-btn {
-            background: linear-gradient(135deg, #4285F4, #34A853);
-            margin-bottom: 25px;
-        }
-
-        .ai-mode-toggle button {
-            background: none;
-            border: none;
-            color: #888;
-            cursor: pointer;
-            font-size: 0.8rem;
-            text-decoration: underline;
-        }
-
-        #aiSettings {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 0.85rem;
-        }
-
-        .result-area {
-            position: relative;
-            margin-top: 20px;
-        }
-
-        #resultText {
-            height: 150px;
-            resize: none;
-            background: rgba(0, 0, 0, 0.5);
-            border-color: var(--secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .count-badge {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .count-badge.warning {
-            color: var(--accent-yellow);
-        }
-
-        .count-badge.error {
-            color: #ff4d4d;
-        }
-
-        .actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            cursor: pointer;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .copy-success {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--secondary);
-            color: black;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        .copy-success.show {
-            opacity: 1;
-        }
+        .copy-success { position: fixed; top: 20px; right: 20px; background: var(--secondary); color: black; padding: 10px 20px; border-radius: 8px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
+        .copy-success.show { opacity: 1; }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-            .card {
-                padding: 20px 15px;
-                border-radius: 16px;
-            }
-            h1 {
-                font-size: 1.4rem;
-                margin-bottom: 20px;
-            }
-            .generate-btn {
-                padding: 14px;
-            }
+            .container { padding: 10px; }
+            .card { padding: 25px 15px; border-radius: 16px; }
+            h1 { font-size: 1.4rem; }
         }
-
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
-            <h1>BJ BAR <span style="font-size: 0.8em;">TWEET GEN</span> <span style="font-size: 0.4em; vertical-align: middle; opacity: 0.5;">ver 1.2</span></h1>
+            <h1>BJ BAR <span style="font-size: 0.7em;">TWEET GEN</span> <span style="font-size: 0.4em; opacity: 0.5;">v1.3</span></h1>
             
             <div class="input-group">
                 <label for="dateInput">営業日</label>
@@ -278,7 +140,7 @@
             </div>
 
             <div class="input-group">
-                <label for="weatherSelect">雰囲気（ランダム生成用）</label>
+                <label for="weatherSelect">雰囲気</label>
                 <select id="weatherSelect">
                     <option value="random">サイコロにお任せ</option>
                     <option value="sunny">晴れ・穏やか</option>
@@ -289,51 +151,39 @@
                 </select>
             </div>
 
-            <div class="ai-mode-toggle" id="aiSettingsToggle" style="margin-bottom: 20px; text-align: right;">
-                <button>🤖 Gemini AI設定（無課金対応）</button>
+            <div style="text-align: right; margin-bottom: 20px;">
+                <button id="aiSettingsToggle" style="background: none; border: none; color: #888; cursor: pointer; text-decoration: underline; font-size: 0.8rem;">🤖 Gemini AI設定</button>
             </div>
 
-            <div id="aiSettings" style="display: none;">
-                <p style="margin-bottom: 10px;">Google AI Studioの無料APIキーを入力すると、Geminiが高機能な告知文を作成します。</p>
+            <div id="aiSettings">
                 <div class="input-group">
-                    <label style="color: #888; font-size: 0.75rem;">APIキー</label>
-                    <input type="password" id="apiKeyInput" placeholder="AI APIキーを入力..." style="margin-bottom: 10px;">
+                    <label>APIキー</label>
+                    <input type="password" id="apiKeyInput" placeholder="AI APIキーを入力...">
                 </div>
                 <div class="input-group">
-                    <label style="color: #888; font-size: 0.75rem;">使用モデル (404エラー時は切り替えてください)</label>
-                    <select id="modelNameSelect" style="font-size: 0.8rem; background: rgba(255,255,255,0.1);">
+                    <label>使用モデル</label>
+                    <select id="modelNameSelect">
                         <option value="gemini-2.5-flash">gemini-2.5-flash (最新・高速)</option>
                         <option value="gemini-2.5-pro">gemini-2.5-pro (最新・最高機能)</option>
                         <option value="gemini-1.5-flash">gemini-1.5-flash (安定版)</option>
-                        <option value="gemini-1.0-pro">gemini-1.0-pro (旧・安定版)</option>
+                        <option value="gemini-1.0-pro">gemini-1.0-pro (旧版・404回避用)</option>
                     </select>
                 </div>
-                <button id="listModelsBtn" style="background: none; border: 1px solid #444; color: #888; font-size: 0.7rem; padding: 5px 10px; border-radius: 4px; cursor: pointer;">🔍 利用可能なモデルを確認（診断）</button>
-                <p style="font-size: 0.75rem; color: #888;">※キーはブラウザにのみ保存されます。誰にも送信されません。<br>
-                <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--secondary);">キーの取得はこちら（無料・すぐ発行できます）</a></p>
+                <button id="listModelsBtn" style="background: none; border: 1px solid #444; color: #888; font-size: 0.7rem; padding: 5px; border-radius: 4px; width: 100%; margin-bottom: 10px;">🔍 利用可能なモデルを確認</button>
             </div>
 
-            <button class="generate-btn" id="generateBtn">
-                <span>✨ テンプレートで生成</span>
-            </button>
-
-            <button class="generate-btn ai-btn" id="aiGenerateBtn" style="display: none;">
-                <span>🤖 Gemini AIで生成</span>
-            </button>
+            <button class="generate-btn" id="generateBtn">✨ テンプレートで生成</button>
+            <button class="generate-btn ai-btn" id="aiGenerateBtn" style="display: none;">🤖 Gemini AIで生成</button>
 
             <div class="result-area">
-                <label>生成されたツイート（140文字以内）</label>
-                <textarea id="resultText" readonly placeholder="ボタンを押して生成してください..."></textarea>
+                <label>生成されたツイート</label>
+                <textarea id="resultText" readonly placeholder="生成ボタンを押してください..."></textarea>
                 <div class="count-badge" id="charCount">0 / 140</div>
             </div>
 
             <div class="actions">
-                <button class="action-btn" id="copyBtn">
-                    <span>📋 コピー</span>
-                </button>
-                <button class="action-btn" id="tweetBtn">
-                    <span>🐦 Xでシェア</span>
-                </button>
+                <button class="action-btn" id="copyBtn">📋 コピー</button>
+                <button class="action-btn" id="tweetBtn">🐦 Xでシェア</button>
             </div>
         </div>
     </div>
@@ -341,56 +191,55 @@
     <div id="copyToast" class="copy-success">コピーしました！</div>
 
     <script type="importmap">
-      {
-        "imports": {
-          "@google/generative-ai": "https://esm.run/@google/generative-ai"
-        }
-      }
+      { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
     </script>
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
-        const dateInput = document.getElementById('dateInput');
-        const generateBtn = document.getElementById('generateBtn');
-        const aiGenerateBtn = document.getElementById('aiGenerateBtn');
-        const resultText = document.getElementById('resultText');
-        const charCount = document.getElementById('charCount');
-        const copyBtn = document.getElementById('copyBtn');
-        const tweetBtn = document.getElementById('tweetBtn');
-        const weatherSelect = document.getElementById('weatherSelect');
-        const copyToast = document.getElementById('copyToast');
-        const aiSettingsToggle = document.getElementById('aiSettingsToggle');
-        const aiSettings = document.getElementById('aiSettings');
-        const apiKeyInput = document.getElementById('apiKeyInput');
-        const modelNameInput = document.getElementById('modelNameInput');
+        const elements = {
+            dateInput: document.getElementById('dateInput'),
+            generateBtn: document.getElementById('generateBtn'),
+            aiGenerateBtn: document.getElementById('aiGenerateBtn'),
+            resultText: document.getElementById('resultText'),
+            charCount: document.getElementById('charCount'),
+            copyBtn: document.getElementById('copyBtn'),
+            tweetBtn: document.getElementById('tweetBtn'),
+            weatherSelect: document.getElementById('weatherSelect'),
+            aiSettingsToggle: document.getElementById('aiSettingsToggle'),
+            aiSettings: document.getElementById('aiSettings'),
+            apiKeyInput: document.getElementById('apiKeyInput'),
+            modelSelect: document.getElementById('modelNameSelect'),
+            listModelsBtn: document.getElementById('listModelsBtn')
+        };
 
-        // Load saved settings
+        // 初期設定
         const savedKey = localStorage.getItem('GEMINI_API_KEY');
         if (savedKey) {
-            apiKeyInput.value = savedKey;
-            aiGenerateBtn.style.display = 'flex';
+            elements.apiKeyInput.value = savedKey;
+            elements.aiGenerateBtn.style.display = 'block';
         }
         const savedModel = localStorage.getItem('GEMINI_MODEL');
         if (savedModel) {
-            document.getElementById('modelNameSelect').value = savedModel;
+            elements.modelSelect.value = savedModel;
         }
 
-        aiSettingsToggle.addEventListener('click', () => {
-            aiSettings.style.display = aiSettings.style.display === 'none' ? 'block' : 'none';
+        // イベントリスナー
+        elements.aiSettingsToggle.addEventListener('click', () => {
+            elements.aiSettings.style.display = elements.aiSettings.style.display === 'none' ? 'block' : 'none';
         });
 
-        apiKeyInput.addEventListener('input', (e) => {
+        elements.apiKeyInput.addEventListener('input', (e) => {
             const key = e.target.value.trim();
             localStorage.setItem('GEMINI_API_KEY', key);
-            aiGenerateBtn.style.display = key ? 'flex' : 'none';
+            elements.aiGenerateBtn.style.display = key ? 'block' : 'none';
         });
 
-        document.getElementById('modelNameSelect').addEventListener('change', (e) => {
+        elements.modelSelect.addEventListener('change', (e) => {
             localStorage.setItem('GEMINI_MODEL', e.target.value);
         });
 
-        document.getElementById('listModelsBtn').addEventListener('click', async () => {
-            const key = apiKeyInput.value.trim();
+        elements.listModelsBtn.addEventListener('click', async () => {
+            const key = elements.apiKeyInput.value.trim();
             if (!key) return alert('APIキーを入力してください');
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
@@ -401,144 +250,100 @@
                 } else {
                     alert("モデルが見つかりませんでした:\n" + JSON.stringify(data));
                 }
-            } catch (e) {
-                alert("診断エラー: " + e.message);
-            }
+            } catch (e) { alert("診断エラー: " + e.message); }
         });
 
-        // URLハッシュからキーを読み込む機能 (#key=...)
-        function checkUrlHash() {
-            const hash = window.location.hash;
-            if (hash.startsWith('#key=')) {
-                const key = hash.replace('#key=', '');
-                if (key) {
-                    apiKeyInput.value = key;
-                    localStorage.setItem('GEMINI_API_KEY', key);
-                    aiGenerateBtn.style.display = 'flex';
-                    // セキュリティのためハッシュを消去
-                    history.replaceState(null, null, window.location.pathname);
-                    alert('APIキーを自動設定しました！');
-                }
+        // URLハッシュからキーを読み込む
+        if (window.location.hash.startsWith('#key=')) {
+            const key = window.location.hash.replace('#key=', '');
+            if (key) {
+                elements.apiKeyInput.value = key;
+                localStorage.setItem('GEMINI_API_KEY', key);
+                elements.aiGenerateBtn.style.display = 'block';
+                history.replaceState(null, null, window.location.pathname);
+                alert('APIキーを自動設定しました！');
             }
         }
-        checkUrlHash();
 
         function setNextSaturday() {
             const now = new Date();
             const day = now.getDay();
             let nextSat = new Date(now);
-            if (day !== 6) {
-                nextSat.setDate(now.getDate() + (6 - day + 7) % 7);
-            }
-            const y = nextSat.getFullYear();
-            const m = String(nextSat.getMonth() + 1).padStart(2, '0');
-            const d = String(nextSat.getDate()).padStart(2, '0');
-            dateInput.value = `${y}-${m}-${d}`;
+            if (day !== 6) nextSat.setDate(now.getDate() + (6 - day + 7) % 7);
+            elements.dateInput.value = nextSat.toISOString().split('T')[0];
         }
         setNextSaturday();
 
-        const data = {
-            sunny: ["爽やかな夜風が気持ちいいですね。高円寺散策のついでに、懐かしい駄菓子をツマミに一杯いかがですか？", "絶好の飲み日和！昭和レトロな空間で、童心に帰ってお喋りしましょう。どなたでもお気軽にどうぞ。", "夜空が綺麗な今夜は、BJ BARでゆったりとした時間を。お気に入りの駄菓子がきっと見つかります。"],
-            rainy: ["雨音を聴きながら、しっぽり駄菓子飲み。足元お気をつけてお越しください。店内は暖かくしてお待ちしてます。", "あいにくの雨ですが、店内はカラフルな駄菓子で賑やかです！雨宿りついでに寄っていきませんか？", "静かな雨の夜。こんな時こそ、懐かしい味と温かいお酒で癒やされましょう。1人飲みも大歓迎です。"],
-            cold: ["冷え込む夜ですね。温かいお酒と、ココアシガレットなんていかが？懐かしさで心も温まりますよ。", "外は寒いですが、BJ BARは熱気たっぷり！ココアや駄菓子を食べるような、安心感をどうぞ。", "冬の夜の匂いがします。キンキンに冷えたビールもいいですが、たまには駄菓子と温かいお酒も粋ですよ。"],
-            hot: ["今日も暑かったですね！冷え冷えのドリンクと、すもも漬けの酸っぱさが体に染みる夜です。", "この暑さを吹き飛ばすのは、やっぱり一杯の酒と美味しい駄菓子。高円寺のオアシスでお待ちしてます。", "夏を感じる夜。ラムネやシュワシュワ系駄菓子で、爽快に乾杯しましょう！"],
-            exciting: ["今夜は賑やかになりそうな予感！新しい駄菓子も入荷してます。みんなでワイワイ盛り上がりましょう！", "高円寺の夜はこれから。お酒も駄菓子も種類豊富に揃ってます。今夜の主役はあなたです！", "BJ BARで最高にエモい夜を。懐かしのBGMと駄菓子の香りに包まれて、楽しい時間を過ごしましょう。"],
-            calls: ["皆様のご来店を心よりお待ちしております！", "ふらっとお立ち寄りください。乾杯しましょう！", "今夜も24時まで元気に営業しています。", "懐かしのあの味を、お酒と一緒に楽しみましょう。", "初めての方も、常連さんも、楽しい夜を共に！"],
-            seasonal: {"01": "新年の空気感の中、", "02": "暦の上では春ですが、", "03": "春の訪れを感じる今宵、", "04": "新年度のスタートですね。", "05": "新緑の美しい季節、", "06": "梅雨の晴れ間の夜に、", "07": "夏本番の暑さですが、", "08": "夜風に秋の気配が混じる、", "09": "夕暮れが早くなってきました。", "10": "秋の夜長を楽しみましょう。", "11": "冬の足音が聞こえてきます。", "12": "一年の締めくくりに、"}
+        const templates = {
+            sunny: ["爽やかな夜風が気持ちいいですね。高円寺散策のついでに、懐かしい駄菓子をツマミに一杯いかがですか？", "絶好の飲み日和！昭和レトロな空間で、童心に帰ってお喋りしましょう。"],
+            rainy: ["雨音を聴きながら、しっぽり駄菓子飲み。足元お気をつけてお越しください。", "あいにくの雨ですが、店内はカラフルな駄菓子で賑やかです！"],
+            cold: ["冷え込む夜ですね。温かいお酒と、懐かしい駄菓子で魂も温まりますよ。", "外は寒いですが、店内は暖かくしてお待ちしてます。"],
+            hot: ["今日も暑かったですね！冷え冷えのドリンクと、酸っぱい駄菓子が染みる夜です。", "この暑さを吹き飛ばす、爽快な一杯と駄菓子をどうぞ。"],
+            exciting: ["今夜は賑やかになりそうな予感！新しい駄菓子も入荷してます。ワイワイ盛り上がりましょう！", "高円寺の夜はこれから。エモいBGMと駄菓子で乾杯！"],
+            calls: ["皆様のご来店を心よりお待ちしております！", "ふらっとお立ち寄りください。乾杯しましょう！", "今夜も元気に営業しています。"],
+            seasonal: {"01": "新年の空気の中、", "02": "暦の上では春ですが、", "03": "春の訪れを感じる今宵、", "04": "新年度のスタートですね。", "05": "新緑の美しい季節、", "06": "梅雨の晴れ間の夜に、", "07": "夏本番の暑さですが、", "08": "夜風に秋の気配が混じる、", "09": "夕暮れが早くなってきました。", "10": "秋の夜長を楽しみましょう。", "11": "冬の足音が聞こえてきます。", "12": "一年の締めくくりに、"}
         };
 
         function templateGenerate() {
-            const date = new Date(dateInput.value);
+            const date = new Date(elements.dateInput.value);
             const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const m = String(date.getMonth() + 1);
-            const d = String(date.getDate());
             const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+            const header = `【高円寺の駄菓子BAR BJ BAR ${date.getMonth()+1}月${date.getDate()}日（${dayNames[date.getDay()]}）も20:00 OPEN】\n\n`;
             
-            const header = `【高円寺の駄菓子BAR BJ BAR ${m}月${d}日（${dayNames[date.getDay()]}）も20:00 OPEN】\n\n`;
+            let w = elements.weatherSelect.value;
+            if (w === 'random') w = ["sunny","rainy","cold","hot","exciting"][Math.floor(Math.random()*5)];
+            const body = templates[w][Math.floor(Math.random()*templates[w].length)];
+            const call = templates.calls[Math.floor(Math.random()*templates.calls.length)];
             
-            let w = weatherSelect.value;
-            if (w === 'random') w = Object.keys(data).filter(k => !['calls','seasonal'].includes(k))[Math.floor(Math.random()*5)];
-            const body = data[w][Math.floor(Math.random()*3)];
-            const call = data.calls[Math.floor(Math.random()*5)];
-            
-            let result = `${header}${data.seasonal[mm]||""}${body}\n\n${call}\n\nホシカワ`;
-            
-            if (result.length > 140) {
-                result = `${header}${body}\n\n${call}\n\nホシカワ`;
-            }
-            if (result.length > 140) {
-                result = `${header}${body}\n\nホシカワ`;
-            }
-            
-            resultText.value = result;
+            elements.resultText.value = `${header}${templates.seasonal[mm]||""}${body}\n\n${call}\n\nホシカワ`;
             updateCharCount();
         }
 
         async function aiGenerate() {
-            const key = apiKeyInput.value.trim();
-            if (!key) return alert('APIキーを入力してください。');
-            aiGenerateBtn.disabled = true;
-            aiGenerateBtn.innerText = '🤖 AIが思考中...';
-            resultText.value = 'Geminiが告知文を考えています...';
+            const key = elements.apiKeyInput.value.trim();
+            if (!key) return;
+            elements.aiGenerateBtn.disabled = true;
+            elements.aiGenerateBtn.innerText = '🤖 AIが思考中...';
             try {
-                const date = new Date(dateInput.value);
-                const m = String(date.getMonth() + 1);
-                const d = String(date.getDate());
+                const date = new Date(elements.dateInput.value);
                 const day = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()];
                 const genAI = new GoogleGenerativeAI(key);
-                const selectedModel = document.getElementById('modelNameSelect').value;
-                const model = genAI.getGenerativeModel({ model: selectedModel || "gemini-2.5-flash" });
+                const model = genAI.getGenerativeModel({ model: elements.modelSelect.value || "gemini-2.5-flash" });
                 const prompt = `高円寺の駄菓子BAR「BJ BAR」店主のツイート告知文を1つ作成せよ。
-日付:${m}月${d}日(${day}) 20:00開店
-
-制約:
-- 冒頭に【高円寺の駄菓子BAR BJ BAR ${m}月${d}日（${day}）も20:00 OPEN】を入れる
-- 140文字以内
-- 文末には改行を2つ入れてから「ホシカワ」と入れること（例：\n\nホシカワ）
-- 日付表記は 0418 のような形式ではなく「${m}月${d}日」とすること
-- 季節感や天気に触れた温かい文を1つ入れる
-- ツイート本文のみ出力すること`;
+日付:${date.getMonth()+1}月${date.getDate()}日(${day}) 20:00開店
+制約: 140文字以内、冒頭に【高円寺の駄菓子BAR BJ BAR ${date.getMonth()+1}月${date.getDate()}日（${day}）も20:00 OPEN】、末尾に「\n\nホシカワ」。本文のみ。`;
                 const res = await model.generateContent(prompt);
-                resultText.value = res.response.text().trim();
-            } catch (e) {
-                resultText.value = 'エラー：' + e.message;
-            } finally {
-                aiGenerateBtn.disabled = false;
-                aiGenerateBtn.innerText = '🤖 Gemini AIで生成';
+                elements.resultText.value = res.response.text().trim();
+            } catch (e) { elements.resultText.value = 'エラー：' + e.message; }
+            finally {
+                elements.aiGenerateBtn.disabled = false;
+                elements.aiGenerateBtn.innerText = '🤖 Gemini AIで生成';
                 updateCharCount();
             }
         }
 
         function updateCharCount() {
-            const len = resultText.value.length;
-            charCount.innerText = `${len} / 140`;
-            charCount.className = 'count-badge ' + (len > 140 ? 'error' : len > 120 ? 'warning' : '');
+            const len = elements.resultText.value.length;
+            elements.charCount.innerText = `${len} / 140`;
+            elements.charCount.className = 'count-badge ' + (len > 140 ? 'error' : len > 120 ? 'warning' : '');
         }
 
-        generateBtn.addEventListener('click', templateGenerate);
-        aiGenerateBtn.addEventListener('click', aiGenerate);
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(resultText.value).then(() => {
-                copyToast.classList.add('show');
-                setTimeout(() => copyToast.classList.remove('show'), 2000);
+        elements.generateBtn.addEventListener('click', templateGenerate);
+        elements.aiGenerateBtn.addEventListener('click', aiGenerate);
+        elements.copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(elements.resultText.value).then(() => {
+                document.getElementById('copyToast').classList.add('show');
+                setTimeout(() => document.getElementById('copyToast').classList.remove('show'), 2000);
             });
         });
-        tweetBtn.addEventListener('click', () => {
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(resultText.value)}`, '_blank');
-        });
-        dateInput.addEventListener('change', templateGenerate);
-        weatherSelect.addEventListener('change', templateGenerate);
+        elements.tweetBtn.addEventListener('click', () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(elements.resultText.value)}`, '_blank'));
         templateGenerate();
 
-        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW registered'))
-                    .catch(err => console.log('SW error', err));
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error', err));
             });
         }
     </script>
-
 </body>
 </html>
