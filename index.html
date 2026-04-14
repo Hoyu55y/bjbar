@@ -383,6 +383,23 @@
             localStorage.setItem('GEMINI_MODEL', e.target.value.trim());
         });
 
+        // URLハッシュからキーを読み込む機能 (#key=...)
+        function checkUrlHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#key=')) {
+                const key = hash.replace('#key=', '');
+                if (key) {
+                    apiKeyInput.value = key;
+                    localStorage.setItem('GEMINI_API_KEY', key);
+                    aiGenerateBtn.style.display = 'flex';
+                    // セキュリティのためハッシュを消去
+                    history.replaceState(null, null, window.location.pathname);
+                    alert('APIキーを自動設定しました！');
+                }
+            }
+        }
+        checkUrlHash();
+
         function setNextSaturday() {
             const now = new Date();
             const day = now.getDay();
