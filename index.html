@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BJ BAR 告知文ジェネレーター</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <meta name="description" content="高円寺の駄菓子BAR BJ BARの告知ツイートを自動生成します。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff00ff;
+            --secondary: #00ffff;
+            --bg-dark: #0a0a12;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #e0e0e0;
+            --accent-yellow: #fff200;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 0, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.15), transparent 40%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+            animation: flow 3s linear infinite;
+        }
+
+        @keyframes flow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        h1 {
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            font-family: inherit;
+            font-size: 16px; /* 防止 iOS 自动缩放 */
+            transition: all 0.3s ease;
+
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn.ai-btn {
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            margin-bottom: 25px;
+        }
+
+        .ai-mode-toggle button {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+
+        #aiSettings {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+        }
+
+        .result-area {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        #resultText {
+            height: 150px;
+            resize: none;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .count-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .count-badge.warning {
+            color: var(--accent-yellow);
+        }
+
+        .count-badge.error {
+            color: #ff4d4d;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .copy-success.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            .card {
+                padding: 20px 15px;
+                border-radius: 16px;
+            }
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 20px;
+            }
+            .generate-btn {
+                padding: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>BJ BAR <span style="font-size: 0.8em;">TWEET GEN</span></h1>
+            
+            <div class="input-group">
+                <label for="dateInput">営業日</label>
+                <input type="date" id="dateInput">
+            </div>
+
+            <div class="input-group">
+                <label for="weatherSelect">雰囲気（ランダム生成用）</label>
+                <select id="weatherSelect">
+                    <option value="random">サイコロにお任せ</option>
+                    <option value="sunny">晴れ・穏やか</option>
+                    <option value="rainy">雨・しっとり</option>
+                    <option value="cold">寒い・温まりたい</option>
+                    <option value="hot">暑い・ノド乾いた</option>
+                    <option value="exciting">盛り上がり・賑やか</option>
+                </select>
+            </div>
+
+            <div class="ai-mode-toggle" id="aiSettingsToggle" style="margin-bottom: 20px; text-align: right;">
+                <button>🤖 Gemini AI設定（無課金対応）</button>
+            </div>
+
+            <div id="aiSettings" style="display: none;">
+                <p style="margin-bottom: 10px;">Google AI Studioの無料APIキーを入力すると、Geminiが高機能な告知文を作成します。</p>
+                <div class="input-group">
+                    <label style="color: #888; font-size: 0.75rem;">APIキー</label>
+                    <input type="password" id="apiKeyInput" placeholder="AI APIキーを入力..." style="margin-bottom: 10px;">
+                </div>
+                <div class="input-group">
+                    <label style="color: #888; font-size: 0.75rem;">モデル名 (404エラー時は変更してください)</label>
+                    <input type="text" id="modelNameInput" value="gemini-3-flash" style="margin-bottom: 10px; font-size: 0.8rem;">
+                </div>
+                <p style="font-size: 0.75rem; color: #888;">※キーはブラウザにのみ保存されます。誰にも送信されません。<br>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--secondary);">キーの取得はこちら（無料・すぐ発行できます）</a></p>
+            </div>
+
+            <button class="generate-btn" id="generateBtn">
+                <span>✨ テンプレートで生成</span>
+            </button>
+
+            <button class="generate-btn ai-btn" id="aiGenerateBtn" style="display: none;">
+                <span>🤖 Gemini AIで生成</span>
+            </button>
+
+            <div class="result-area">
+                <label>生成されたツイート（140文字以内）</label>
+                <textarea id="resultText" readonly placeholder="ボタンを押して生成してください..."></textarea>
+                <div class="count-badge" id="charCount">0 / 140</div>
+            </div>
+
+            <div class="actions">
+                <button class="action-btn" id="copyBtn">
+                    <span>📋 コピー</span>
+                </button>
+                <button class="action-btn" id="tweetBtn">
+                    <span>🐦 Xでシェア</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="copyToast" class="copy-success">コピーしました！</div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        const dateInput = document.getElementById('dateInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const aiGenerateBtn = document.getElementById('aiGenerateBtn');
+        const resultText = document.getElementById('resultText');
+        const charCount = document.getElementById('charCount');
+        const copyBtn = document.getElementById('copyBtn');
+        const tweetBtn = document.getElementById('tweetBtn');
+        const weatherSelect = document.getElementById('weatherSelect');
+        const copyToast = document.getElementById('copyToast');
+        const aiSettingsToggle = document.getElementById('aiSettingsToggle');
+        const aiSettings = document.getElementById('aiSettings');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const modelNameInput = document.getElementById('modelNameInput');
+
+        // Load saved settings
+        const savedKey = localStorage.getItem('GEMINI_API_KEY');
+        if (savedKey) {
+            apiKeyInput.value = savedKey;
+            aiGenerateBtn.style.display = 'flex';
+        }
+        const savedModel = localStorage.getItem('GEMINI_MODEL');
+        if (savedModel) {
+            modelNameInput.value = savedModel;
+        }
+
+        aiSettingsToggle.addEventListener('click', () => {
+            aiSettings.style.display = aiSettings.style.display === 'none' ? 'block' : 'none';
+        });
+
+        apiKeyInput.addEventListener('input', (e) => {
+            const key = e.target.value.trim();
+            localStorage.setItem('GEMINI_API_KEY', key);
+            aiGenerateBtn.style.display = key ? 'flex' : 'none';
+        });
+
+        modelNameInput.addEventListener('input', (e) => {
+            localStorage.setItem('GEMINI_MODEL', e.target.value.trim());
+        });
+
+        function setNextSaturday() {
+            const now = new Date();
+            const day = now.getDay();
+            let nextSat = new Date(now);
+            if (day !== 6) {
+                nextSat.setDate(now.getDate() + (6 - day + 7) % 7);
+            }
+            const y = nextSat.getFullYear();
+            const m = String(nextSat.getMonth() + 1).padStart(2, '0');
+            const d = String(nextSat.getDate()).padStart(2, '0');
+            dateInput.value = `${y}-${m}-${d}`;
+        }
+        setNextSaturday();
+
+        const data = {
+            sunny: ["爽やかな夜風が気持ちいいですね。高円寺散策のついでに、懐かしい駄菓子をツマミに一杯いかがですか？", "絶好の飲み日和！昭和レトロな空間で、童心に帰ってお喋りしましょう。どなたでもお気軽にどうぞ。", "夜空が綺麗な今夜は、BJ BARでゆったりとした時間を。お気に入りの駄菓子がきっと見つかります。"],
+            rainy: ["雨音を聴きながら、しっぽり駄菓子飲み。足元お気をつけてお越しください。店内は暖かくしてお待ちしてます。", "あいにくの雨ですが、店内はカラフルな駄菓子で賑やかです！雨宿りついでに寄っていきませんか？", "静かな雨の夜。こんな時こそ、懐かしい味と温かいお酒で癒やされましょう。1人飲みも大歓迎です。"],
+            cold: ["冷え込む夜ですね。温かいお酒と、ココアシガレットなんていかが？懐かしさで心も温まりますよ。", "外は寒いですが、BJ BARは熱気たっぷり！ココアや駄菓子を食べるような、安心感をどうぞ。", "冬の夜の匂いがします。キンキンに冷えたビールもいいですが、たまには駄菓子と温かいお酒も粋ですよ。"],
+            hot: ["今日も暑かったですね！冷え冷えのドリンクと、すもも漬けの酸っぱさが体に染みる夜です。", "この暑さを吹き飛ばすのは、やっぱり一杯の酒と美味しい駄菓子。高円寺のオアシスでお待ちしてます。", "夏を感じる夜。ラムネやシュワシュワ系駄菓子で、爽快に乾杯しましょう！"],
+            exciting: ["今夜は賑やかになりそうな予感！新しい駄菓子も入荷してます。みんなでワイワイ盛り上がりましょう！", "高円寺の夜はこれから。お酒も駄菓子も種類豊富に揃ってます。今夜の主役はあなたです！", "BJ BARで最高にエモい夜を。懐かしのBGMと駄菓子の香りに包まれて、楽しい時間を過ごしましょう。"],
+            calls: ["皆様のご来店を心よりお待ちしております！", "ふらっとお立ち寄りください。乾杯しましょう！", "今夜も24時まで元気に営業しています。", "懐かしのあの味を、お酒と一緒に楽しみましょう。", "初めての方も、常連さんも、楽しい夜を共に！"],
+            seasonal: {"01": "新年の空気感の中、", "02": "暦の上では春ですが、", "03": "春の訪れを感じる今宵、", "04": "新年度のスタートですね。", "05": "新緑の美しい季節、", "06": "梅雨の晴れ間の夜に、", "07": "夏本番の暑さですが、", "08": "夜風に秋の気配が混じる、", "09": "夕暮れが早くなってきました。", "10": "秋の夜長を楽しみましょう。", "11": "冬の足音が聞こえてきます。", "12": "一年の締めくくりに、"}
+        };
+
+        function templateGenerate() {
+            const date = new Date(dateInput.value);
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const m = String(date.getMonth() + 1);
+            const d = String(date.getDate());
+            const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+            
+            const header = `【高円寺の駄菓子BAR BJ BAR ${m}月${d}日（${dayNames[date.getDay()]}）も20:00 OPEN】\n\n`;
+            
+            let w = weatherSelect.value;
+            if (w === 'random') w = Object.keys(data).filter(k => !['calls','seasonal'].includes(k))[Math.floor(Math.random()*5)];
+            const body = data[w][Math.floor(Math.random()*3)];
+            const call = data.calls[Math.floor(Math.random()*5)];
+            
+            let result = `${header}${data.seasonal[mm]||""}${body}\n\n${call}\n\nホシカワ`;
+            
+            if (result.length > 140) {
+                result = `${header}${body}\n\n${call}\n\nホシカワ`;
+            }
+            if (result.length > 140) {
+                result = `${header}${body}\n\nホシカワ`;
+            }
+            
+            resultText.value = result;
+            updateCharCount();
+        }
+
+        async function aiGenerate() {
+            const key = apiKeyInput.value.trim();
+            if (!key) return alert('APIキーを入力してください。');
+            aiGenerateBtn.disabled = true;
+            aiGenerateBtn.innerText = '🤖 AIが思考中...';
+            resultText.value = 'Geminiが告知文を考えています...';
+            try {
+                const date = new Date(dateInput.value);
+                const m = String(date.getMonth() + 1);
+                const d = String(date.getDate());
+                const day = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()];
+                const genAI = new GoogleGenerativeAI(key);
+                const model = genAI.getGenerativeModel({ model: modelNameInput.value.trim() || "gemini-2.5-flash" });
+                const prompt = `高円寺の駄菓子BAR「BJ BAR」店主のツイート告知文を1つ作成せよ。
+日付:${m}月${d}日(${day}) 20:00開店
+
+制約:
+- 冒頭に【高円寺の駄菓子BAR BJ BAR ${m}月${d}日（${day}）も20:00 OPEN】を入れる
+- 140文字以内
+- 文末には改行を2つ入れてから「ホシカワ」と入れること（例：\n\nホシカワ）
+- 日付表記は 0418 のような形式ではなく「${m}月${d}日」とすること
+- 季節感や天気に触れた温かい文を1つ入れる
+- ツイート本文のみ出力すること`;
+                const res = await model.generateContent(prompt);
+                resultText.value = res.response.text().trim();
+            } catch (e) {
+                resultText.value = 'エラー：' + e.message;
+            } finally {
+                aiGenerateBtn.disabled = false;
+                aiGenerateBtn.innerText = '🤖 Gemini AIで生成';
+                updateCharCount();
+            }
+        }
+
+        function updateCharCount() {
+            const len = resultText.value.length;
+            charCount.innerText = `${len} / 140`;
+            charCount.className = 'count-badge ' + (len > 140 ? 'error' : len > 120 ? 'warning' : '');
+        }
+
+        generateBtn.addEventListener('click', templateGenerate);
+        aiGenerateBtn.addEventListener('click', aiGenerate);
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(resultText.value).then(() => {
+                copyToast.classList.add('show');
+                setTimeout(() => copyToast.classList.remove('show'), 2000);
+            });
+        });
+        tweetBtn.addEventListener('click', () => {
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(resultText.value)}`, '_blank');
+        });
+        dateInput.addEventListener('change', templateGenerate);
+        weatherSelect.addEventListener('change', templateGenerate);
+        templateGenerate();
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW error', err));
+            });
+        }
+    </script>
+
+</body>
+</html>

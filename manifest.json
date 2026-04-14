@@ -1,0 +1,17 @@
+{
+  "name": "BJ BAR Tweet Gen",
+  "short_name": "BJ BAR",
+  "description": "高円寺の駄菓子BAR BJ BARの告知ツイート生成ツール",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#ff00ff",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
