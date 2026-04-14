@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bj-bar-tweet-gen-v2';
+const CACHE_NAME = 'bj-bar-tweet-gen-v3';
 const ASSETS = [
   './',
   './index.html',
